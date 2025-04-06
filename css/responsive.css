@@ -1,0 +1,202 @@
+/* Additional responsive design styles */
+
+/* Mobile styles (up to 767px) */
+@media screen and (max-width: 767px) {
+  /* Header and navigation */
+  .header-container {
+    flex-direction: column;
+    padding: 15px 0;
+  }
+  
+  .logo {
+    margin-bottom: 15px;
+  }
+  
+  nav ul {
+    flex-direction: column;
+    display: none;
+    width: 100%;
+  }
+  
+  nav ul.show {
+    display: flex;
+  }
+  
+  nav ul li {
+    margin: 8px 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  /* Hero section */
+  .hero-content {
+    padding: 40px 20px;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  /* Features section */
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Documentation layout */
+  .docs-container {
+    flex-direction: column;
+  }
+  
+  .docs-sidebar {
+    width: 100%;
+    margin-bottom: 30px;
+    position: relative;
+    top: 0;
+  }
+  
+  .docs-content {
+    width: 100%;
+    padding-left: 0;
+  }
+  
+  /* Examples grid */
+  .examples-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Download options */
+  .download-options {
+    flex-direction: column;
+  }
+  
+  .download-card {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  /* Footer */
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-col {
+    margin-bottom: 30px;
+  }
+}
+
+/* Tablet styles (768px to 1023px) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Features section */
+  .features-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  /* Documentation layout */
+  .docs-sidebar {
+    width: 30%;
+  }
+  
+  .docs-content {
+    width: 70%;
+  }
+  
+  /* Examples grid */
+  .examples-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  /* Footer */
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Ensure images are responsive */
+img, .example-full-image {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Improve code block readability on small screens */
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+}
+
+/* Improve table responsiveness */
+table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Improve form elements on mobile */
+input, select, textarea, button {
+  max-width: 100%;
+}
+
+/* Installation tabs responsive design */
+.installation-tabs .tab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.installation-tabs .tab-button {
+  flex: 1 1 auto;
+  min-width: 120px;
+  margin-bottom: 10px;
+}
+
+/* Ensure proper spacing in mobile view */
+.section-title, .content-section {
+  padding: 0 15px;
+}
+
+/* Improve navigation between examples on mobile */
+.example-navigation {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-navigation .btn {
+  margin-bottom: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  .example-navigation {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .example-navigation .btn {
+    margin-bottom: 0;
+  }
+}
+
+/* Add smooth scrolling for better mobile experience */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Improve touch targets for mobile */
+nav ul li a, .btn, .tab-button {
+  padding: 12px 15px;
+}
+
+@media screen and (min-width: 1024px) {
+  nav ul li a, .btn, .tab-button {
+    padding: 10px 15px;
+  }
+}

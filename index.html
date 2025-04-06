@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Causal Regularization - Extending Causal Invariance to Deep Models</title>
+    <meta name="description" content="Neural Causal Regularization (NCR) is a framework that extends causal invariance principles to deep neural networks for improved out-of-distribution generalization.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html">Neural<span>Causal</span>Reg</a>
+            </div>
+            <nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="docs/index.html">Documentation</a></li>
+                    <li><a href="examples/index.html">Examples</a></li>
+                    <li><a href="download/index.html">Download</a></li>
+                    <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Neural Causal Regularization</h1>
+            <p>A framework that extends causal invariance principles to deep neural networks, enabling improved out-of-distribution generalization and causal feature identification.</p>
+            <div>
+                <a href="download/index.html" class="btn">Download Package</a>
+                <a href="docs/index.html" class="btn btn-secondary">View Documentation</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Key Features</h2>
+                <p>Neural Causal Regularization provides a comprehensive framework for causal machine learning with deep models</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Causal Invariance</h3>
+                    <p>Extends invariant learning principles to nonlinear deep neural networks, enabling stable prediction across environments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>OOD Generalization</h3>
+                    <p>Improves model performance on out-of-distribution data by focusing on invariant causal relationships.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Feature Identification</h3>
+                    <p>Identifies causal features that have stable relationships with the target variable across environments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Easy Integration</h3>
+                    <p>Seamlessly integrates with existing deep learning workflows in both R and Python.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Simulation Tools</h3>
+                    <p>Comprehensive tools for generating data from various structural equation models for benchmarking.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Theoretical Guarantees</h3>
+                    <p>Backed by theoretical results on out-of-distribution generalization and causal feature identification.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-container">
+                <div class="content-text">
+                    <h2>About Neural Causal Regularization</h2>
+                    <p>Neural Causal Regularization (NCR) is a framework that extends causal invariance principles to deep neural networks. Traditional machine learning models often struggle with distribution shifts because they may learn spurious correlations that don't hold in new environments.</p>
+                    <p>NCR addresses this challenge by training on data from multiple environments and penalizing the variance of prediction risks across these environments. This encourages the model to learn features that lead to stable performance, which typically correspond to causal relationships.</p>
+                    <p>The framework provides theoretical guarantees on out-of-distribution generalization and causal feature identification, making it a powerful tool for applications where robustness to distribution shifts is critical.</p>
+                    <a href="docs/index.html" class="btn btn-secondary">Learn More</a>
+                </div>
+                <div class="content-image">
+                    <img src="images/ncr-concept.png" alt="Neural Causal Regularization Concept">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section class="content-section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="content-container">
+                <div class="content-image">
+                    <img src="images/code-example.png" alt="Code Example">
+                </div>
+                <div class="content-text">
+                    <h2>Getting Started</h2>
+                    <p>Getting started with Neural Causal Regularization is easy. The package provides a simple API for training models with causal regularization.</p>
+                    <p>Install the package from GitHub:</p>
+                    <pre><code class="r">
+# install.packages("devtools")
+devtools::install_github("username/ncausalreg")
+                    </code></pre>
+                    <p>Train a model with Neural Causal Regularization:</p>
+                    <pre><code class="r">
+library(ncausalreg)
+
+# Create a neural network model
+model <- ncr_model(input_dim = p, hidden_dims = c(10, 5))
+
+# Train with causal regularization
+result <- train_ncr(
+  model = model,
+  x_train_list = x_train_list,
+  y_train_list = y_train_list,
+  lambda_reg = 1.0
+)
+                    </code></pre>
+                    <a href="examples/index.html" class="btn btn-secondary">View Examples</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Applications</h2>
+                <p>Neural Causal Regularization can be applied to a wide range of domains where distribution shifts are common</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Healthcare</h3>
+                    <p>Develop robust predictive models that generalize across different patient populations and clinical settings.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Economics</h3>
+                    <p>Build models that remain valid under policy changes and economic shifts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cloud-sun-rain"></i>
+                    </div>
+                    <h3>Climate Science</h3>
+                    <p>Create predictive models that generalize across different climate regimes and time periods.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Robotics</h3>
+                    <p>Develop control policies that transfer across different environments and physical conditions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Citation Section -->
+    <section class="content-section" style="background-color: var(--light-color);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Citation</h2>
+                <p>If you use Neural Causal Regularization in your research, please cite our paper</p>
+            </div>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <pre><code>
+@article{richter2025neural,
+  title={Neural Causal Regularization: Extending Causal Invariance to Deep Models},
+  author={Richter, F. and Rigana, K. and Wit, E.},
+  journal={},
+  year={2025}
+}
+                </code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Neural Causal Regularization</h3>
+                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="docs/index.html">Documentation</a></li>
+                        <li><a href="examples/index.html">Examples</a></li>
+                        <li><a href="download/index.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="docs/api.html">API Reference</a></li>
+                        <li><a href="docs/tutorials.html">Tutorials</a></li>
+                        <li><a href="docs/theory.html">Theoretical Background</a></li>
+                        <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub Repository</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:contact@example.com">Email Us</a></li>
+                        <li><a href="https://twitter.com/username" target="_blank">Twitter</a></li>
+                        <li><a href="https://github.com/username" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

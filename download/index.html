@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download - Neural Causal Regularization</title>
+    <meta name="description" content="Download the Neural Causal Regularization package and access installation instructions.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html">Neural<span>Causal</span>Reg</a>
+            </div>
+            <nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../docs/index.html">Documentation</a></li>
+                    <li><a href="../examples/index.html">Examples</a></li>
+                    <li><a href="index.html">Download</a></li>
+                    <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <section class="content-section">
+            <div class="section-title">
+                <h1>Download Neural Causal Regularization</h1>
+                <p>Get the latest version of the Neural Causal Regularization package</p>
+            </div>
+
+            <div class="download-options">
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="download-content">
+                        <h3>R Package (Source)</h3>
+                        <p>Download the source package for installation in R</p>
+                        <a href="files/ncausalreg_1.0.0.tar.gz" class="btn btn-primary">Download .tar.gz</a>
+                    </div>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fab fa-windows"></i>
+                    </div>
+                    <div class="download-content">
+                        <h3>Windows Binary</h3>
+                        <p>Pre-compiled binary package for Windows</p>
+                        <a href="files/ncausalreg_1.0.0.zip" class="btn btn-primary">Download .zip</a>
+                    </div>
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div class="download-content">
+                        <h3>GitHub Repository</h3>
+                        <p>Access the source code and development version</p>
+                        <a href="https://github.com/username/ncausalreg" target="_blank" class="btn btn-primary">View on GitHub</a>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Installation Instructions</h2>
+
+            <div class="installation-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="r-install">R Installation</button>
+                    <button class="tab-button" data-tab="github-install">GitHub Installation</button>
+                    <button class="tab-button" data-tab="docker-install">Docker</button>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="r-install">
+                        <h3>Installing from CRAN</h3>
+                        <p>The easiest way to install the Neural Causal Regularization package is from CRAN:</p>
+                        <pre><code>install.packages("ncausalreg")</code></pre>
+
+                        <h3>Installing from Source</h3>
+                        <p>To install from the downloaded source package:</p>
+                        <pre><code># In R
+install.packages("path/to/ncausalreg_1.0.0.tar.gz", repos = NULL, type = "source")</code></pre>
+
+                        <h3>Installing the Windows Binary</h3>
+                        <p>To install from the downloaded Windows binary:</p>
+                        <pre><code># In R
+install.packages("path/to/ncausalreg_1.0.0.zip", repos = NULL, type = "win.binary")</code></pre>
+                    </div>
+
+                    <div class="tab-pane" id="github-install">
+                        <h3>Installing from GitHub</h3>
+                        <p>To install the development version from GitHub:</p>
+                        <pre><code># Install devtools if not already installed
+if (!requireNamespace("devtools", quietly = TRUE)) {
+  install.packages("devtools")
+}
+
+# Install ncausalreg from GitHub
+devtools::install_github("username/ncausalreg")</code></pre>
+
+                        <h3>Cloning the Repository</h3>
+                        <p>To clone the repository for development:</p>
+                        <pre><code># Using git
+git clone https://github.com/username/ncausalreg.git
+
+# Navigate to the directory
+cd ncausalreg
+
+# Install the package in development mode
+R CMD INSTALL .</code></pre>
+                    </div>
+
+                    <div class="tab-pane" id="docker-install">
+                        <h3>Using Docker</h3>
+                        <p>We provide a Docker image with Neural Causal Regularization pre-installed:</p>
+                        <pre><code># Pull the Docker image
+docker pull username/ncausalreg:latest
+
+# Run the container with RStudio
+docker run -d -p 8787:8787 -e PASSWORD=yourpassword username/ncausalreg:latest
+
+# Then open http://localhost:8787 in your browser
+# Username: rstudio
+# Password: yourpassword</code></pre>
+
+                        <h3>Building the Docker Image</h3>
+                        <p>To build the Docker image yourself:</p>
+                        <pre><code># Clone the repository
+git clone https://github.com/username/ncausalreg.git
+
+# Navigate to the directory
+cd ncausalreg
+
+# Build the Docker image
+docker build -t ncausalreg .</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Dependencies</h2>
+            <p>The Neural Causal Regularization package depends on the following R packages:</p>
+            <ul>
+                <li><strong>torch</strong>: For neural network implementation</li>
+                <li><strong>ggplot2</strong>: For visualization</li>
+                <li><strong>dplyr</strong>: For data manipulation</li>
+                <li><strong>tidyr</strong>: For data reshaping</li>
+            </ul>
+            <p>These dependencies will be automatically installed when you install the package.</p>
+
+            <h2>System Requirements</h2>
+            <p>The Neural Causal Regularization package has been tested on the following systems:</p>
+            <ul>
+                <li>Windows 10 and 11</li>
+                <li>macOS 10.15 (Catalina) and later</li>
+                <li>Ubuntu 20.04 LTS and later</li>
+            </ul>
+            <p>For optimal performance, especially when training large neural networks, we recommend:</p>
+            <ul>
+                <li>At least 8GB of RAM</li>
+                <li>A modern CPU with multiple cores</li>
+                <li>GPU support (optional, but can significantly speed up training)</li>
+            </ul>
+
+            <h2>Version History</h2>
+            <div class="version-history">
+                <div class="version-item">
+                    <h3>Version 1.0.0 <span class="version-date">April 2025</span></h3>
+                    <ul>
+                        <li>Initial release</li>
+                        <li>Support for linear and nonlinear structural equation models</li>
+                        <li>Neural network implementation with causal regularization</li>
+                        <li>Comprehensive visualization tools</li>
+                        <li>Feature importance analysis</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>License</h2>
+            <p>The Neural Causal Regularization package is released under the MIT License:</p>
+            <pre><code>MIT License
+
+Copyright (c) 2025 Neural Causal Regularization Authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre>
+
+            <h2>Citation</h2>
+            <p>If you use Neural Causal Regularization in your research, please cite our paper:</p>
+            <pre><code>@article{richter2025neural,
+  title={Neural Causal Regularization: Extending Causal Invariance to Deep Models},
+  author={Richter, F. and Rigana, K. and Wit, E.},
+  journal={},
+  year={2025}
+}</code></pre>
+
+            <h2>Support</h2>
+            <p>If you encounter any issues or have questions about the Neural Causal Regularization package, please:</p>
+            <ul>
+                <li>Check the <a href="../docs/faq.html">FAQ</a> for answers to common questions</li>
+                <li>Report issues on our <a href="https://github.com/username/ncausalreg/issues" target="_blank">GitHub Issues page</a></li>
+                <li>Contact us at <a href="mailto:contact@example.com">contact@example.com</a></li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Neural Causal Regularization</h3>
+                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../docs/index.html">Documentation</a></li>
+                        <li><a href="../examples/index.html">Examples</a></li>
+                        <li><a href="index.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="../docs/api.html">API Reference</a></li>
+                        <li><a href="../docs/tutorials.html">Tutorials</a></li>
+                        <li><a href="../docs/theory.html">Theoretical Background</a></li>
+                        <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub Repository</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:contact@example.com">Email Us</a></li>
+                        <li><a href="https://twitter.com/username" target="_blank">Twitter</a></li>
+                        <li><a href="https://github.com/username" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons and panes
+                    document.querySelectorAll('.tab-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    document.querySelectorAll('.tab-pane').forEach(pane => {
+                        pane.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Show corresponding tab pane
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation - Neural Causal Regularization</title>
+    <meta name="description" content="Installation instructions for the Neural Causal Regularization package.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html">Neural<span>Causal</span>Reg</a>
+            </div>
+            <nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="index.html">Documentation</a></li>
+                    <li><a href="../examples/index.html">Examples</a></li>
+                    <li><a href="../download/index.html">Download</a></li>
+                    <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Documentation Content -->
+    <div class="container docs-container">
+        <aside class="docs-sidebar">
+            <h3>Documentation</h3>
+            <ul>
+                <li><a href="index.html">Introduction</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+                <li><a href="theory.html">Theoretical Background</a></li>
+                <li><a href="api.html">API Reference</a></li>
+                <li>
+                    <strong>Data Generation</strong>
+                    <ul>
+                        <li><a href="data-generation/linear-sem.html">Linear SEM</a></li>
+                        <li><a href="data-generation/nonlinear-sem.html">Nonlinear SEM</a></li>
+                        <li><a href="data-generation/hidden-confounders.html">Hidden Confounders</a></li>
+                        <li><a href="data-generation/adversarial-shifts.html">Adversarial Shifts</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Model Training</strong>
+                    <ul>
+                        <li><a href="model-training/ncr-model.html">NCR Model</a></li>
+                        <li><a href="model-training/train-ncr.html">Training with NCR</a></li>
+                        <li><a href="model-training/linear-causal-reg.html">Linear Causal Regularization</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Evaluation & Visualization</strong>
+                    <ul>
+                        <li><a href="evaluation/model-evaluation.html">Model Evaluation</a></li>
+                        <li><a href="evaluation/feature-importance.html">Feature Importance</a></li>
+                        <li><a href="evaluation/visualization.html">Visualization</a></li>
+                    </ul>
+                </li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1>Installation</h1>
+            
+            <p>This page provides instructions for installing the Neural Causal Regularization package.</p>
+
+            <h2>Prerequisites</h2>
+            
+            <p>Before installing the Neural Causal Regularization package, you need to have R installed on your system. The package has been tested with R version 4.0.0 and above.</p>
+            
+            <p>The package depends on the following R packages:</p>
+            <ul>
+                <li><code>torch</code>: For neural network implementation</li>
+                <li><code>ggplot2</code>: For visualization</li>
+                <li><code>dplyr</code>: For data manipulation</li>
+                <li><code>tidyr</code>: For data reshaping</li>
+            </ul>
+
+            <h2>Installation from GitHub</h2>
+            
+            <p>The recommended way to install the Neural Causal Regularization package is from GitHub using the <code>devtools</code> package:</p>
+            
+            <pre><code class="r"># Install devtools if not already installed
+if (!requireNamespace("devtools", quietly = TRUE)) {
+  install.packages("devtools")
+}
+
+# Install ncausalreg from GitHub
+devtools::install_github("username/ncausalreg")
+</code></pre>
+
+            <h2>Installation from Source</h2>
+            
+            <p>Alternatively, you can download the package source from the <a href="../download/index.html">Download</a> page and install it locally:</p>
+            
+            <pre><code class="r"># Install from local source
+install.packages("path/to/ncausalreg_package.zip", repos = NULL, type = "source")
+</code></pre>
+
+            <h2>Installing Dependencies</h2>
+            
+            <p>The package dependencies should be installed automatically. However, if you encounter any issues, you can install them manually:</p>
+            
+            <pre><code class="r"># Install dependencies
+install.packages(c("ggplot2", "dplyr", "tidyr"))
+
+# Install torch
+install.packages("torch")
+</code></pre>
+
+            <p>Note that <code>torch</code> is a large package and may take some time to install. It includes binaries for various platforms, so no additional configuration should be needed.</p>
+
+            <h2>Verifying Installation</h2>
+            
+            <p>To verify that the package has been installed correctly, you can load it and check the version:</p>
+            
+            <pre><code class="r"># Load the package
+library(ncausalreg)
+
+# Check package version
+packageVersion("ncausalreg")
+</code></pre>
+
+            <h2>Troubleshooting</h2>
+            
+            <h3>Common Issues</h3>
+            
+            <h4>Torch Installation Issues</h4>
+            <p>If you encounter issues with the torch installation, you can try installing it separately before installing ncausalreg:</p>
+            
+            <pre><code class="r"># Install torch separately
+install.packages("torch")
+
+# Verify torch installation
+library(torch)
+torch_tensor(1)
+</code></pre>
+
+            <h4>Package Not Found</h4>
+            <p>If R cannot find the package after installation, make sure that your R library path is correctly set:</p>
+            
+            <pre><code class="r"># Check library paths
+.libPaths()
+
+# Install to a specific library path
+devtools::install_github("username/ncausalreg", lib = .libPaths()[1])
+</code></pre>
+
+            <h4>Dependency Conflicts</h4>
+            <p>If you encounter dependency conflicts, you may need to update your existing packages:</p>
+            
+            <pre><code class="r"># Update packages
+update.packages(ask = FALSE)
+</code></pre>
+
+            <h2>System Requirements</h2>
+            
+            <p>The Neural Causal Regularization package has been tested on the following systems:</p>
+            
+            <ul>
+                <li>Windows 10 and 11</li>
+                <li>macOS 10.15 (Catalina) and later</li>
+                <li>Ubuntu 20.04 LTS and later</li>
+            </ul>
+            
+            <p>For optimal performance, especially when training large neural networks, we recommend:</p>
+            
+            <ul>
+                <li>At least 8GB of RAM</li>
+                <li>A modern CPU with multiple cores</li>
+                <li>GPU support (optional, but can significantly speed up training)</li>
+            </ul>
+
+            <h2>Next Steps</h2>
+            
+            <p>Once you have successfully installed the package, you can proceed to the <a href="getting-started.html">Getting Started</a> guide to learn how to use it.</p>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Neural Causal Regularization</h3>
+                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Documentation</a></li>
+                        <li><a href="../examples/index.html">Examples</a></li>
+                        <li><a href="../download/index.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="api.html">API Reference</a></li>
+                        <li><a href="tutorials.html">Tutorials</a></li>
+                        <li><a href="theory.html">Theoretical Background</a></li>
+                        <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub Repository</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:contact@example.com">Email Us</a></li>
+                        <li><a href="https://twitter.com/username" target="_blank">Twitter</a></li>
+                        <li><a href="https://github.com/username" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

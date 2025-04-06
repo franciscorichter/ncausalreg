@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Neural Causal Regularization</title>
+    <meta name="description" content="A quick introduction to using the Neural Causal Regularization package with basic examples.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html">Neural<span>Causal</span>Reg</a>
+            </div>
+            <nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="index.html">Documentation</a></li>
+                    <li><a href="../examples/index.html">Examples</a></li>
+                    <li><a href="../download/index.html">Download</a></li>
+                    <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Documentation Content -->
+    <div class="container docs-container">
+        <aside class="docs-sidebar">
+            <h3>Documentation</h3>
+            <ul>
+                <li><a href="index.html">Introduction</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+                <li><a href="theory.html">Theoretical Background</a></li>
+                <li><a href="api.html">API Reference</a></li>
+                <li>
+                    <strong>Data Generation</strong>
+                    <ul>
+                        <li><a href="data-generation/linear-sem.html">Linear SEM</a></li>
+                        <li><a href="data-generation/nonlinear-sem.html">Nonlinear SEM</a></li>
+                        <li><a href="data-generation/hidden-confounders.html">Hidden Confounders</a></li>
+                        <li><a href="data-generation/adversarial-shifts.html">Adversarial Shifts</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Model Training</strong>
+                    <ul>
+                        <li><a href="model-training/ncr-model.html">NCR Model</a></li>
+                        <li><a href="model-training/train-ncr.html">Training with NCR</a></li>
+                        <li><a href="model-training/linear-causal-reg.html">Linear Causal Regularization</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Evaluation & Visualization</strong>
+                    <ul>
+                        <li><a href="evaluation/model-evaluation.html">Model Evaluation</a></li>
+                        <li><a href="evaluation/feature-importance.html">Feature Importance</a></li>
+                        <li><a href="evaluation/visualization.html">Visualization</a></li>
+                    </ul>
+                </li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1>Getting Started with Neural Causal Regularization</h1>
+            
+            <p>This guide will help you get started with the Neural Causal Regularization package. We'll walk through a basic example to demonstrate the key functionality.</p>
+
+            <h2>Loading the Package</h2>
+            
+            <p>First, load the package:</p>
+            
+            <pre><code class="r">library(ncausalreg)
+library(torch)  # For tensor operations
+</code></pre>
+
+            <h2>Basic Workflow</h2>
+            
+            <p>The typical workflow for using Neural Causal Regularization involves the following steps:</p>
+            
+            <ol>
+                <li>Generate or prepare data from multiple environments</li>
+                <li>Create a neural network model</li>
+                <li>Train the model with causal regularization</li>
+                <li>Evaluate the model on test data</li>
+                <li>Analyze feature importance</li>
+            </ol>
+
+            <h2>Step 1: Generate Data</h2>
+            
+            <p>Let's start by generating synthetic data from a linear structural equation model:</p>
+            
+            <pre><code class="r"># Set random seed for reproducibility
+set.seed(123)
+
+# Generate data from a linear structural equation model
+p <- 5  # Number of features
+n_samples <- 500  # Number of samples
+
+# Define causal parameters
+gamma <- runif(p, -1, 1)  # Effect of shift variable on covariates
+beta <- c(1, 0.5, 0, 0, 0)  # Only first two variables are causal
+
+# Generate data
+data <- generate_linear_sem(
+  n_samples = n_samples,
+  p = p,
+  gamma = gamma,
+  beta = beta,
+  env_shift = 1.0
+)
+</code></pre>
+
+            <p>The generated data includes:</p>
+            <ul>
+                <li><code>X</code>: Matrix of covariates (n_samples x p)</li>
+                <li><code>Y</code>: Vector of target variable (length n_samples)</li>
+                <li><code>A</code>: Vector of shift variable (length n_samples)</li>
+                <li><code>env</code>: Environment indicator (0 for reference, 1 for shifted)</li>
+            </ul>
+
+            <h2>Step 2: Prepare Training Data</h2>
+            
+            <p>Next, we need to split the data by environment and convert it to torch tensors:</p>
+            
+            <pre><code class="r"># Split data by environment
+env0_idx <- which(data$env == 0)
+env1_idx <- which(data$env == 1)
+
+# Create training data lists
+x_train_list <- list(data$X[env0_idx, ], data$X[env1_idx, ])
+y_train_list <- list(data$Y[env0_idx], data$Y[env1_idx])
+
+# Convert to torch tensors
+x_train_list_torch <- lapply(x_train_list, function(x) torch_tensor(x, dtype = torch_float32()))
+y_train_list_torch <- lapply(y_train_list, function(y) torch_tensor(y, dtype = torch_float32())$view(c(-1, 1)))
+</code></pre>
+
+            <h2>Step 3: Create a Neural Network Model</h2>
+            
+            <p>Now, let's create a neural network model for causal regularization:</p>
+            
+            <pre><code class="r"># Create a neural network model
+model <- ncr_model(
+  input_dim = p,  # Input dimension (number of features)
+  hidden_dims = c(10, 5),  # Hidden layer dimensions
+  output_dim = 1,  # Output dimension
+  activation = "relu"  # Activation function
+)
+</code></pre>
+
+            <h2>Step 4: Train the Model with Causal Regularization</h2>
+            
+            <p>Train the model using Neural Causal Regularization:</p>
+            
+            <pre><code class="r"># Train the model with Neural Causal Regularization
+result <- train_ncr(
+  model = model,
+  x_train_list = x_train_list_torch,
+  y_train_list = y_train_list_torch,
+  lambda_reg = 1.0,  # Regularization strength
+  lr = 0.01,         # Learning rate
+  n_epochs = 100,    # Number of epochs
+  batch_size = 32    # Batch size
+)
+</code></pre>
+
+            <p>The training result includes:</p>
+            <ul>
+                <li><code>model</code>: Trained model</li>
+                <li><code>losses</code>: Vector of losses during training</li>
+                <li><code>avg_risks</code>: Vector of average risks during training</li>
+                <li><code>var_risks</code>: Vector of risk variances during training</li>
+            </ul>
+
+            <h2>Step 5: Visualize Training History</h2>
+            
+            <p>Let's visualize the training history:</p>
+            
+            <pre><code class="r"># Plot training history
+plot_training_history(result)
+</code></pre>
+
+            <p>This will show how the loss, average risk, and variance risk evolved during training.</p>
+
+            <h2>Step 6: Generate Test Data</h2>
+            
+            <p>Generate test data with a stronger environment shift to evaluate out-of-distribution performance:</p>
+            
+            <pre><code class="r"># Generate test data with stronger environment shift
+test_data <- generate_linear_sem(
+  n_samples = 200,
+  p = p,
+  gamma = gamma,
+  beta = beta,
+  env_shift = 2.0  # Stronger shift for OOD testing
+)
+
+# Convert to torch tensors
+x_test <- torch_tensor(test_data$X, dtype = torch_float32())
+y_test <- torch_tensor(test_data$Y, dtype = torch_float32())$view(c(-1, 1))
+</code></pre>
+
+            <h2>Step 7: Evaluate the Model</h2>
+            
+            <p>Evaluate the model on the test data:</p>
+            
+            <pre><code class="r"># Evaluate model
+mse <- evaluate_model(result$model, x_test, y_test)
+print(paste("Test MSE:", mse))
+</code></pre>
+
+            <h2>Step 8: Extract Feature Importance</h2>
+            
+            <p>Extract and visualize feature importance:</p>
+            
+            <pre><code class="r"># Extract feature importance
+importance <- extract_feature_importance(result$model, x_test, y_test)
+
+# Plot feature importance
+plot_feature_importance(importance)
+</code></pre>
+
+            <p>This will show which features the model considers most important for prediction.</p>
+
+            <h2>Step 9: Compare with Baseline Models</h2>
+            
+            <p>Let's compare our NCR model with baseline models like Empirical Risk Minimization (ERM):</p>
+            
+            <pre><code class="r"># Train models with different lambda values
+# ERM (lambda=0), NCR (lambda=10)
+model_names <- c("ERM", "NCR")
+lambda_values <- c(0, 10)
+models <- list()
+
+for (i in seq_along(lambda_values)) {
+  # Create and train model
+  model <- ncr_model(input_dim = p, hidden_dims = c(10, 5))
+  result <- train_ncr(
+    model = model,
+    x_train_list = x_train_list_torch,
+    y_train_list = y_train_list_torch,
+    lambda_reg = lambda_values[i],
+    lr = 0.01,
+    n_epochs = 100,
+    batch_size = 32,
+    verbose = FALSE
+  )
+  
+  # Store model
+  models[[i]] <- result$model
+}
+
+# Split test data by environment
+test_env0_idx <- which(test_data$env == 0)
+test_env1_idx <- which(test_data$env == 1)
+
+x_test_env0 <- test_data$X[test_env0_idx, ]
+y_test_env0 <- test_data$Y[test_env0_idx]
+x_test_env1 <- test_data$X[test_env1_idx, ]
+y_test_env1 <- test_data$Y[test_env1_idx]
+
+# Convert to torch tensors
+x_test_env0_torch <- torch_tensor(x_test_env0, dtype = torch_float32())
+y_test_env0_torch <- torch_tensor(y_test_env0, dtype = torch_float32())$view(c(-1, 1))
+x_test_env1_torch <- torch_tensor(x_test_env1, dtype = torch_float32())
+y_test_env1_torch <- torch_tensor(y_test_env1, dtype = torch_float32())$view(c(-1, 1))
+
+# Compare models
+comparison <- compare_models(
+  models = models,
+  model_names = model_names,
+  x_test_list = list(x_test_env0_torch, x_test_env1_torch),
+  y_test_list = list(y_test_env0_torch, y_test_env1_torch)
+)
+
+# Plot comparison
+plot_model_comparison(comparison)
+</code></pre>
+
+            <p>This will show how NCR compares to ERM across different environments.</p>
+
+            <h2>Linear Models with Causal Regularization</h2>
+            
+            <p>For simpler problems, you can use linear models with causal regularization:</p>
+            
+            <pre><code class="r"># Train linear model with causal regularization
+linear_model <- train_linear_causal_reg(
+  x_train_list = x_train_list,
+  y_train_list = y_train_list,
+  lambda_reg = 1.0
+)
+
+# Print model coefficients
+print("Linear model coefficients:")
+print(linear_model$coefficients)
+print(paste("Linear model intercept:", linear_model$intercept))
+
+# Compare with true beta
+print("True beta:")
+print(beta)
+print(paste("Correlation with true beta:", cor(linear_model$coefficients, beta)))
+</code></pre>
+
+            <h2>Next Steps</h2>
+            
+            <p>Now that you've learned the basics of Neural Causal Regularization, you can:</p>
+            
+            <ul>
+                <li>Explore more complex data generation scenarios in the <a href="../examples/index.html">Examples</a> section</li>
+                <li>Learn about the theoretical background in the <a href="theory.html">Theoretical Background</a> page</li>
+                <li>Check out the <a href="api.html">API Reference</a> for detailed documentation of all functions</li>
+            </ul>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Neural Causal Regularization</h3>
+                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Documentation</a></li>
+                        <li><a href="../examples/index.html">Examples</a></li>
+                        <li><a href="../download/index.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="api.html">API Reference</a></li>
+                        <li><a href="tutorials.html">Tutorials</a></li>
+                        <li><a href="theory.html">Theoretical Background</a></li>
+                        <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub Repository</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:contact@example.com">Email Us</a></li>
+                        <li><a href="https://twitter.com/username" target="_blank">Twitter</a></li>
+                        <li><a href="https://github.com/username" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

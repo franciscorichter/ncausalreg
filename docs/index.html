@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Neural Causal Regularization</title>
+    <meta name="description" content="Comprehensive documentation for the Neural Causal Regularization package, including API reference, tutorials, and theoretical background.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html">Neural<span>Causal</span>Reg</a>
+            </div>
+            <nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="index.html">Documentation</a></li>
+                    <li><a href="../examples/index.html">Examples</a></li>
+                    <li><a href="../download/index.html">Download</a></li>
+                    <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Documentation Content -->
+    <div class="container docs-container">
+        <aside class="docs-sidebar">
+            <h3>Documentation</h3>
+            <ul>
+                <li><a href="index.html">Introduction</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+                <li><a href="theory.html">Theoretical Background</a></li>
+                <li><a href="api.html">API Reference</a></li>
+                <li>
+                    <strong>Data Generation</strong>
+                    <ul>
+                        <li><a href="data-generation/linear-sem.html">Linear SEM</a></li>
+                        <li><a href="data-generation/nonlinear-sem.html">Nonlinear SEM</a></li>
+                        <li><a href="data-generation/hidden-confounders.html">Hidden Confounders</a></li>
+                        <li><a href="data-generation/adversarial-shifts.html">Adversarial Shifts</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Model Training</strong>
+                    <ul>
+                        <li><a href="model-training/ncr-model.html">NCR Model</a></li>
+                        <li><a href="model-training/train-ncr.html">Training with NCR</a></li>
+                        <li><a href="model-training/linear-causal-reg.html">Linear Causal Regularization</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Evaluation & Visualization</strong>
+                    <ul>
+                        <li><a href="evaluation/model-evaluation.html">Model Evaluation</a></li>
+                        <li><a href="evaluation/feature-importance.html">Feature Importance</a></li>
+                        <li><a href="evaluation/visualization.html">Visualization</a></li>
+                    </ul>
+                </li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1>Neural Causal Regularization Documentation</h1>
+            
+            <p>Welcome to the documentation for the Neural Causal Regularization (NCR) package. This documentation provides comprehensive information about the package, including installation instructions, theoretical background, API reference, and examples.</p>
+
+            <h2>What is Neural Causal Regularization?</h2>
+            
+            <p>Neural Causal Regularization is a framework that extends causal invariance principles to deep neural networks. It addresses the challenge of distribution shifts in machine learning by encouraging models to learn stable, invariant relationships that generalize better to new, unseen environments.</p>
+            
+            <p>The key idea behind NCR is to penalize the variance of prediction risks across different environments during training. This encourages the model to focus on features that lead to consistent performance across environments, which typically correspond to causal relationships.</p>
+
+            <h2>Key Concepts</h2>
+            
+            <h3>Causal Invariance</h3>
+            <p>Causal invariance is based on the principle that causal relationships remain stable across different environments or interventions. By focusing on learning these invariant relationships, models can generalize better to new environments.</p>
+            
+            <h3>Out-of-Distribution Generalization</h3>
+            <p>Out-of-distribution (OOD) generalization refers to a model's ability to perform well on data that comes from a different distribution than the training data. This is a critical challenge in many real-world applications where test conditions may differ from training conditions.</p>
+            
+            <h3>Structural Equation Models</h3>
+            <p>Structural Equation Models (SEMs) provide a framework for representing causal relationships between variables. In the context of NCR, SEMs are used to generate synthetic data for benchmarking and to understand the theoretical properties of the method.</p>
+
+            <h2>Package Components</h2>
+            
+            <h3>Data Generation</h3>
+            <p>The package provides functions to generate data from various structural equation models:</p>
+            <ul>
+                <li><code>generate_linear_sem()</code>: Generate data from linear structural equation models</li>
+                <li><code>generate_nonlinear_sem()</code>: Generate data from nonlinear structural equation models</li>
+                <li><code>generate_hidden_confounders_sem()</code>: Generate data with hidden confounders</li>
+                <li><code>generate_adversarial_sem()</code>: Generate data with adversarial environment shifts</li>
+            </ul>
+            
+            <h3>Model Training</h3>
+            <p>Functions for creating and training models with causal regularization:</p>
+            <ul>
+                <li><code>ncr_model()</code>: Create a neural network model for causal regularization</li>
+                <li><code>compute_ncr_loss()</code>: Compute the causal regularization loss</li>
+                <li><code>train_ncr()</code>: Train a neural network with causal regularization</li>
+                <li><code>train_linear_causal_reg()</code>: Train a linear model with causal regularization</li>
+            </ul>
+            
+            <h3>Evaluation and Visualization</h3>
+            <p>Functions for evaluating models and visualizing results:</p>
+            <ul>
+                <li><code>evaluate_model()</code>: Evaluate a model on test data</li>
+                <li><code>compare_models()</code>: Compare multiple models on test data</li>
+                <li><code>extract_feature_importance()</code>: Extract feature importance from a trained model</li>
+                <li><code>plot_training_history()</code>: Plot training history</li>
+                <li><code>plot_model_comparison()</code>: Plot model comparison results</li>
+                <li><code>plot_feature_importance()</code>: Plot feature importance</li>
+            </ul>
+
+            <h2>Getting Started</h2>
+            
+            <p>To get started with Neural Causal Regularization, check out the following resources:</p>
+            
+            <ul>
+                <li><a href="installation.html">Installation Guide</a>: Instructions for installing the package</li>
+                <li><a href="getting-started.html">Getting Started Guide</a>: A quick introduction to using the package</li>
+                <li><a href="../examples/index.html">Examples</a>: Practical examples demonstrating the package's functionality</li>
+                <li><a href="api.html">API Reference</a>: Detailed documentation of all functions in the package</li>
+            </ul>
+
+            <h2>Citation</h2>
+            
+            <p>If you use Neural Causal Regularization in your research, please cite our paper:</p>
+            
+            <pre><code>@article{richter2025neural,
+  title={Neural Causal Regularization: Extending Causal Invariance to Deep Models},
+  author={Richter, F. and Rigana, K. and Wit, E.},
+  journal={},
+  year={2025}
+}</code></pre>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Neural Causal Regularization</h3>
+                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Documentation</a></li>
+                        <li><a href="../examples/index.html">Examples</a></li>
+                        <li><a href="../download/index.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="api.html">API Reference</a></li>
+                        <li><a href="tutorials.html">Tutorials</a></li>
+                        <li><a href="theory.html">Theoretical Background</a></li>
+                        <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub Repository</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:contact@example.com">Email Us</a></li>
+                        <li><a href="https://twitter.com/username" target="_blank">Twitter</a></li>
+                        <li><a href="https://github.com/username" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
