@@ -1,56 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>FAQ – ncr</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Neural Causal Regularization</title>
+    <meta name="description" content="Frequently asked questions about the Neural Causal Regularization package.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
 </head>
-
 <body>
-    <header>…</header>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html">Neural<span>Causal</span>Reg</a>
+            </div>
+            <nav>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="index.html">Documentation</a></li>
+                    <li><a href="../examples/index.html">Examples</a></li>
+                    <li><a href="../download/index.html">Download</a></li>
+                    <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <main class="container docs-content">
-        <h1>FAQ</h1>
+    <!-- Documentation Content -->
+    <div class="container docs-container">
+        <aside class="docs-sidebar">
+            <h3>Documentation</h3>
+            <ul>
+                <li><a href="index.html">Introduction</a></li>
+                <li><a href="installation.html">Installation</a></li>
+                <li><a href="getting-started.html">Getting Started</a></li>
+                <li><a href="theory.html">Theoretical Background</a></li>
+                <li><a href="api.html">API Reference</a></li>
+                <li>
+                    <strong>Data Generation</strong>
+                    <ul>
+                        <li><a href="data-generation/linear-sem.html">Linear SEM</a></li>
+                        <li><a href="data-generation/nonlinear-sem.html">Nonlinear SEM</a></li>
+                        <li><a href="data-generation/hidden-confounders.html">Hidden Confounders</a></li>
+                        <li><a href="data-generation/adversarial-shifts.html">Adversarial Shifts</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Model Training</strong>
+                    <ul>
+                        <li><a href="model-training/ncr-model.html">NCR Model</a></li>
+                        <li><a href="model-training/train-ncr.html">Training with NCR</a></li>
+                        <li><a href="model-training/linear-causal-reg.html">Linear Causal Regularization</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Evaluation & Visualization</strong>
+                    <ul>
+                        <li><a href="evaluation/model-evaluation.html">Model Evaluation</a></li>
+                        <li><a href="evaluation/feature-importance.html">Feature Importance</a></li>
+                        <li><a href="evaluation/visualization.html">Visualization</a></li>
+                    </ul>
+                </li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </aside>
 
-        <h2>General</h2>
-        <details>
-            <summary><strong>What problem does NCR solve?</strong></summary>
-            <p>It reduces a model’s reliance on spurious features by equalising the
-                prediction risk across (at least) two training environments.</p>
-        </details>
+        <main class="docs-content">
+            <h1>Frequently Asked Questions</h1>
+            
+            <p>This page answers common questions about Neural Causal Regularization.</p>
 
-        <details>
-            <summary><strong>How many environments do I need?</strong></summary>
-            <p>Two diverse environments are enough for the theory and for the coloured‑MNIST
-                benchmark. More can help tune λ.</p>
-        </details>
+            <h2>General Questions</h2>
+            
+            <h3>What is Neural Causal Regularization?</h3>
+            <p>Neural Causal Regularization (NCR) is a framework that extends causal invariance principles to deep neural networks. It penalizes the variance of prediction risks across environments, encouraging models to learn stable, invariant relationships that generalize better to new, unseen environments.</p>
+            
+            <h3>How does NCR differ from standard machine learning approaches?</h3>
+            <p>Standard machine learning approaches typically minimize the average prediction error on training data, which can lead to models that learn spurious correlations that don't hold in new environments. NCR, on the other hand, explicitly encourages invariance across environments, leading to models that focus on stable, causal relationships.</p>
+            
+            <h3>What are the main advantages of using NCR?</h3>
+            <p>The main advantages of NCR include:</p>
+            <ul>
+                <li>Improved out-of-distribution generalization</li>
+                <li>Identification of causal features</li>
+                <li>Robustness to distribution shifts</li>
+                <li>Compatibility with deep neural networks</li>
+            </ul>
+            
+            <h3>When should I use NCR?</h3>
+            <p>NCR is particularly useful in scenarios where:</p>
+            <ul>
+                <li>You have data from multiple environments or domains</li>
+                <li>You expect distribution shifts between training and deployment</li>
+                <li>You want to identify causal features</li>
+                <li>You need models that generalize well to new environments</li>
+            </ul>
 
-        <details>
-            <summary><strong>Is this the same as IRM or REx?</strong></summary>
-            <p>NCR is closest to REx but uses an ℓ<sub>1</sub> gap instead of variance,
-                which is convex, scale‑free, and needs only one hyper‑parameter.</p>
-        </details>
+            <h2>Technical Questions</h2>
+            
+            <h3>How many environments do I need for NCR?</h3>
+            <p>NCR requires data from at least two different environments to identify invariant relationships. However, having more diverse environments can lead to better identification of causal features. In practice, even with just two environments, NCR can provide benefits over standard empirical risk minimization.</p>
+            
+            <h3>How do I choose the regularization parameter λ?</h3>
+            <p>The regularization parameter λ controls the trade-off between average performance and invariance. A larger λ puts more emphasis on invariance, which can lead to better out-of-distribution generalization but potentially worse in-distribution performance. In practice, λ can be chosen using cross-validation on a validation set from a different environment than the training environments.</p>
+            
+            <h3>Can NCR be used with any neural network architecture?</h3>
+            <p>Yes, NCR can be applied to any neural network architecture. However, the choice of architecture can affect the model's ability to capture invariant relationships. In general, deeper networks with sufficient capacity are recommended.</p>
+            
+            <h3>How does NCR handle hidden confounders?</h3>
+            <p>NCR assumes that all relevant causal variables are observed. If there are hidden confounders, NCR may not identify the true causal features. However, in practice, NCR can still provide benefits over standard approaches even in the presence of hidden confounders, especially if the confounding effect is similar across environments.</p>
+            
+            <h3>Is NCR computationally expensive?</h3>
+            <p>NCR requires training on data from multiple environments, which can increase the computational cost compared to standard training. However, the additional cost is typically modest, especially for smaller models. The main computational overhead comes from computing the variance of risks across environments, which scales linearly with the number of environments.</p>
 
-        <h2>Practical</h2>
-        <details>
-            <summary><strong>How do I choose λ?</strong></summary>
-            <p>Call <code>ncr.utils.tune_lambda</code> with a validation loader from a second
-                environment. The helper tries several values and returns the best.</p>
-        </details>
+            <h2>Implementation Questions</h2>
+            
+            <h3>How do I prepare my data for NCR?</h3>
+            <p>To use NCR, you need to organize your data by environment. Each environment should have its own set of covariates (X) and target variables (Y). In the ncausalreg package, this is typically represented as lists of matrices or tensors, where each element corresponds to a different environment.</p>
+            
+            <h3>Can I use NCR with categorical variables?</h3>
+            <p>Yes, but categorical variables need to be properly encoded (e.g., using one-hot encoding) before being passed to the model. The ncausalreg package works with numerical inputs, so any preprocessing of categorical variables should be done beforehand.</p>
+            
+            <h3>How do I interpret the feature importance from NCR?</h3>
+            <p>Feature importance in NCR models can be interpreted similarly to other machine learning models. Features with higher importance scores have a stronger influence on the model's predictions. In the context of NCR, features with high importance across environments are more likely to be causally related to the target variable.</p>
+            
+            <h3>Can NCR be used for classification problems?</h3>
+            <p>Yes, NCR can be adapted for classification problems by using an appropriate loss function (e.g., cross-entropy loss) and output activation (e.g., sigmoid or softmax). The core principle of penalizing the variance of risks across environments remains the same.</p>
+            
+            <h3>How do I save and load NCR models?</h3>
+            <p>NCR models in the ncausalreg package are based on torch models, so they can be saved and loaded using torch's standard functions:</p>
+            
+            <pre><code class="r"># Save model
+torch::torch_save(model, "path/to/model.pt")
 
-        <details>
-            <summary><strong>Can I use CNNs?</strong></summary>
-            <p>Yes. Pass any <code>torch.nn.Module</code> to <code>train_ncr</code>.</p>
-        </details>
+# Load model
+model <- torch::torch_load("path/to/model.pt")
+</code></pre>
 
-        <details>
-            <summary><strong>GPU support?</strong></summary>
-            <p>The code is pure PyTorch; it runs on CPU or CUDA automatically.</p>
-        </details>
-    </main>
-    <footer>…</footer>
+            <h2>Comparison with Other Methods</h2>
+            
+            <h3>How does NCR compare to Invariant Risk Minimization (IRM)?</h3>
+            <p>NCR and IRM both aim to learn invariant predictors, but they use different approaches. IRM uses a bi-level optimization or gradient penalties, while NCR directly penalizes the variance of risks across environments. In practice, NCR can be easier to optimize and may provide more stable results, especially with deep neural networks.</p>
+            
+            <h3>How does NCR compare to Domain Adaptation methods?</h3>
+            <p>Domain Adaptation methods typically focus on aligning feature distributions across domains, while NCR focuses on learning invariant predictors. NCR can be more effective when the relationship between features and the target variable changes across domains, as it explicitly encourages invariance in this relationship.</p>
+            
+            <h3>Can NCR be combined with other regularization techniques?</h3>
+            <p>Yes, NCR can be combined with other regularization techniques like L1/L2 regularization, dropout, or batch normalization. These techniques can complement NCR by preventing overfitting and improving generalization.</p>
+
+            <h2>Troubleshooting</h2>
+            
+            <h3>My NCR model is not performing better than standard models. What might be wrong?</h3>
+            <p>There could be several reasons:</p>
+            <ul>
+                <li>The environments might not be diverse enough to identify invariant relationships</li>
+                <li>The regularization parameter λ might not be set appropriately</li>
+                <li>The model architecture might not be expressive enough</li>
+                <li>There might be hidden confounders that affect the relationship between features and the target variable</li>
+            </ul>
+            <p>Try experimenting with different values of λ, using more diverse environments, or using a more expressive model architecture.</p>
+            
+            <h3>I'm getting NaN losses during training. What should I do?</h3>
+            <p>NaN losses can occur if the gradients become too large or if there are numerical instabilities. Try:</p>
+            <ul>
+                <li>Reducing the learning rate</li>
+                <li>Using gradient clipping</li>
+                <li>Normalizing your input data</li>
+                <li>Using a more stable optimization algorithm (e.g., Adam)</li>
+            </ul>
+            
+            <h3>The variance penalty is always zero. What might be wrong?</h3>
+            <p>If the variance penalty is always zero, it could mean that the risks are identical across environments, which might happen if:</p>
+            <ul>
+                <li>The environments are too similar</li>
+                <li>The model is not expressive enough to capture differences between environments</li>
+                <li>There's a bug in the implementation</li>
+            </ul>
+            <p>Check that your environments are indeed different and that the model is being trained correctly.</p>
+
+            <h2>Additional Resources</h2>
+            
+            <h3>Where can I learn more about causal inference?</h3>
+            <p>Here are some recommended resources:</p>
+            <ul>
+                <li>Pearl, J. (2009). Causality: Models, Reasoning, and Inference. Cambridge University Press.</li>
+                <li>Peters, J., Janzing, D., & Schölkopf, B. (2017). Elements of Causal Inference: Foundations and Learning Algorithms. MIT Press.</li>
+                <li>Hernán, M. A., & Robins, J. M. (2020). Causal Inference: What If. Chapman & Hall/CRC.</li>
+            </ul>
+            
+            <h3>Are there any tutorials or courses on NCR?</h3>
+            <p>Check out our <a href="../examples/index.html">Examples</a> page for tutorials on using NCR. For more general resources on causal machine learning, we recommend:</p>
+            <ul>
+                <li>The <a href="https://www.bradyneal.com/causal-inference-course" target="_blank">Causal Inference Course</a> by Brady Neal</li>
+                <li>The <a href="https://www.cs.cmu.edu/~aarti/Class/10701_Spring14/slides/causal.pdf" target="_blank">Causal Discovery</a> lecture by Aarti Singh</li>
+            </ul>
+            
+            <h3>How can I contribute to the ncausalreg package?</h3>
+            <p>We welcome contributions! Check out our <a href="https://github.com/username/ncausalreg" target="_blank">GitHub repository</a> for information on how to contribute. You can help by:</p>
+            <ul>
+                <li>Reporting bugs</li>
+                <li>Suggesting new features</li>
+                <li>Improving documentation</li>
+                <li>Contributing code</li>
+            </ul>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Neural Causal Regularization</h3>
+                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Documentation</a></li>
+                        <li><a href="../examples/index.html">Examples</a></li>
+                        <li><a href="../download/index.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="api.html">API Reference</a></li>
+                        <li><a href="tutorials.html">Tutorials</a></li>
+                        <li><a href="theory.html">Theoretical Background</a></li>
+                        <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub Repository</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:contact@example.com">Email Us</a></li>
+                        <li><a href="https://twitter.com/username" target="_blank">Twitter</a></li>
+                        <li><a href="https://github.com/username" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script src="../js/main.js"></script>
 </body>
-
 </html>
