@@ -1,252 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theoretical Background - Neural Causal Regularization</title>
-    <meta name="description" content="Theoretical foundations and mathematical background of Neural Causal Regularization.">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Theory – ncr</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
 </head>
+
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <a href="../index.html">Neural<span>Causal</span>Reg</a>
-            </div>
-            <nav>
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul>
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="index.html">Documentation</a></li>
-                    <li><a href="../examples/index.html">Examples</a></li>
-                    <li><a href="../download/index.html">Download</a></li>
-                    <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <header>…</header>
 
-    <!-- Documentation Content -->
-    <div class="container docs-container">
-        <aside class="docs-sidebar">
-            <h3>Documentation</h3>
-            <ul>
-                <li><a href="index.html">Introduction</a></li>
-                <li><a href="installation.html">Installation</a></li>
-                <li><a href="getting-started.html">Getting Started</a></li>
-                <li><a href="theory.html">Theoretical Background</a></li>
-                <li><a href="api.html">API Reference</a></li>
-                <li>
-                    <strong>Data Generation</strong>
-                    <ul>
-                        <li><a href="data-generation/linear-sem.html">Linear SEM</a></li>
-                        <li><a href="data-generation/nonlinear-sem.html">Nonlinear SEM</a></li>
-                        <li><a href="data-generation/hidden-confounders.html">Hidden Confounders</a></li>
-                        <li><a href="data-generation/adversarial-shifts.html">Adversarial Shifts</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Model Training</strong>
-                    <ul>
-                        <li><a href="model-training/ncr-model.html">NCR Model</a></li>
-                        <li><a href="model-training/train-ncr.html">Training with NCR</a></li>
-                        <li><a href="model-training/linear-causal-reg.html">Linear Causal Regularization</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Evaluation & Visualization</strong>
-                    <ul>
-                        <li><a href="evaluation/model-evaluation.html">Model Evaluation</a></li>
-                        <li><a href="evaluation/feature-importance.html">Feature Importance</a></li>
-                        <li><a href="evaluation/visualization.html">Visualization</a></li>
-                    </ul>
-                </li>
-                <li><a href="faq.html">FAQ</a></li>
-            </ul>
-        </aside>
+    <main class="container docs-content">
+        <h1>Theoretical Background</h1>
 
-        <main class="docs-content">
-            <h1>Theoretical Background</h1>
-            
-            <p>This page provides the theoretical foundations and mathematical background of Neural Causal Regularization.</p>
+        <p>Suppose two training environments <em>e = 1,2</em> yield empirical risks
+            \(R_e(θ)\).
+            Neural Causal Regularization minimises</p>
 
-            <h2>Problem Formulation</h2>
-            
-            <p>Consider a prediction problem where we observe data from multiple environments \(e \in \mathcal{E}\). In each environment, we have covariates \(X \in \mathbb{R}^p\) and a target variable \(Y \in \mathbb{R}\). The joint distribution \(P^e(X, Y)\) may vary across environments due to distribution shifts.</p>
-            
-            <p>Our goal is to learn a predictor \(f: \mathbb{R}^p \rightarrow \mathbb{R}\) that performs well across all environments, including unseen ones. This requires identifying stable, invariant relationships that hold across environments.</p>
+        \[
+        \mathcal L(θ)
+        = \tfrac12\bigl[R_1 + R_2\bigr]
+        \;+\; γ \,\bigl\lvert R_1 - R_2\bigr\rvert
+        \]
 
-            <h2>Structural Causal Models</h2>
-            
-            <p>Neural Causal Regularization is based on the framework of Structural Causal Models (SCMs). An SCM consists of a set of variables and a set of structural equations that describe how each variable is determined by other variables in the system.</p>
-            
-            <p>In the context of our prediction problem, we can represent the data-generating process as:</p>
-            
-            <pre><code>X = g(A, ε_X)
-Y = f*(X_S) + ε_Y</code></pre>
-            
-            <p>where:</p>
-            <ul>
-                <li>\(A\) is a shift variable that affects the distribution of \(X\) across environments</li>
-                <li>\(X_S\) is a subset of \(X\) containing the causal parents of \(Y\)</li>
-                <li>\(f^*\) is the true causal function</li>
-                <li>\(\varepsilon_X\) and \(\varepsilon_Y\) are noise terms</li>
-            </ul>
-            
-            <p>The key insight is that the relationship between \(X_S\) and \(Y\) remains invariant across environments, even as the distribution of \(X\) changes.</p>
+        <ul>
+            <li><strong>First term</strong> = ordinary empirical risk.</li>
+            <li><strong>Second term</strong> = ℓ<sub>1</sub> gap that punishes
+                environment‑specific fitting.</li>
+            <li>Set γ → 0 ➜ ERM.
+                Set γ large ➜ risks forced to equalise ➜ causal solution.</li>
+        </ul>
 
-            <h2>Invariant Risk Minimization</h2>
-            
-            <p>Invariant Risk Minimization (IRM) is a framework for learning predictors that perform well across environments. The core idea is to find a data representation such that the optimal predictor on top of this representation is the same across all environments.</p>
-            
-            <p>Formally, IRM aims to solve:</p>
-            
-            <pre><code>min_{f} \sum_{e \in \mathcal{E}} R^e(f) 
-subject to f \in \arg\min_{f'} R^e(f') \forall e \in \mathcal{E}</code></pre>
-            
-            <p>where \(R^e(f)\) is the risk of predictor \(f\) in environment \(e\).</p>
-            
-            <p>This is a challenging bi-level optimization problem. In practice, it is often relaxed to a penalty term that encourages the gradient of the risk to be similar across environments.</p>
+        <h2>Why ℓ<sub>1</sub> not variance?</h2>
+        <p>The absolute gap provides a **tighter convex upper‑bound** on the
+            worst‑environment risk than the quadratic variance used by REx, leading
+            to faster optimisation and fewer hyper‑parameters.</p>
 
-            <h2>Neural Causal Regularization</h2>
-            
-            <p>Neural Causal Regularization (NCR) extends these ideas to deep neural networks. Instead of enforcing invariance through a bi-level optimization, NCR penalizes the variance of prediction risks across environments.</p>
-            
-            <p>The NCR objective function is:</p>
-            
-            <pre><code>min_{f} \bar{R}(f) + \lambda \cdot V(f)</code></pre>
-            
-            <p>where:</p>
-            <ul>
-                <li>\(\bar{R}(f) = \frac{1}{|\mathcal{E}|} \sum_{e \in \mathcal{E}} R^e(f)\) is the average risk across environments</li>
-                <li>\(V(f) = \frac{1}{|\mathcal{E}|} \sum_{e \in \mathcal{E}} (R^e(f) - \bar{R}(f))^2\) is the variance of risks across environments</li>
-                <li>\(\lambda\) is a regularization parameter that controls the trade-off between average performance and invariance</li>
-            </ul>
-            
-            <p>By minimizing the variance of risks, NCR encourages the model to focus on features that lead to consistent performance across environments, which typically correspond to causal relationships.</p>
+        <h2>λ re‑parameterisation</h2>
+        <p>Define \(\lambda = \tfrac{γ}{1+γ} ∈ [0,1)\).
+            Then the objective is a convex combination of mean risk and gap:
+            \((1-λ)\bar R + λ|R_1-R_2|\).</p>
 
-            <h2>Theoretical Guarantees</h2>
-            
-            <h3>Out-of-Distribution Generalization</h3>
-            
-            <p>Under certain conditions, NCR provides guarantees on out-of-distribution generalization. Specifically, if the data is generated according to a structural causal model where the relationship between \(X_S\) and \(Y\) is invariant across environments, and if the model class is expressive enough to capture this relationship, then NCR will recover a predictor that generalizes to new environments.</p>
-            
-            <p>Theorem 1 (Informal): Let \(f_{\lambda}\) be the solution to the NCR objective with regularization parameter \(\lambda\). As \(\lambda \rightarrow \infty\), \(f_{\lambda}\) converges to a predictor that depends only on the causal features \(X_S\) and achieves the optimal invariant risk.</p>
-            
-            <h3>Causal Feature Identification</h3>
-            
-            <p>NCR can also be used to identify causal features. By examining the feature importance of a model trained with NCR, we can distinguish between causal and non-causal features.</p>
-            
-            <p>Theorem 2 (Informal): Under suitable conditions, as \(\lambda \rightarrow \infty\), the feature importance of non-causal features in a model trained with NCR approaches zero.</p>
-            
-            <h3>Finite-Sample Bounds</h3>
-            
-            <p>In practice, we only have finite samples from each environment. NCR provides finite-sample bounds on the out-of-distribution generalization error.</p>
-            
-            <p>Theorem 3 (Informal): With probability at least \(1-\delta\), the out-of-distribution generalization error of a model trained with NCR is bounded by \(O(\sqrt{\frac{\log(1/\delta)}{n}})\), where \(n\) is the minimum number of samples across environments.</p>
+        <h2>Generalisation guarantee (brief)</h2>
+        <ul>
+            <li>If the true data‑generating process factorises as
+                \(Y = f(X_S)+ε\) with <em>X<sub>S</sub></em> causally invariant, and
+                if the two environments vary only in non‑causal features, then</li>
+            <li>\(\min_θ\mathcal L(θ)\) recovers a predictor that depends
+                only on <em>X<sub>S</sub></em>, hence generalises to unseen shifts.</li>
+        </ul>
 
-            <h2>Connections to Other Methods</h2>
-            
-            <h3>Invariant Risk Minimization (IRM)</h3>
-            
-            <p>NCR is closely related to IRM but uses a different approach to enforce invariance. While IRM uses a bi-level optimization or gradient penalties, NCR directly penalizes the variance of risks across environments.</p>
-            
-            <h3>Risk Extrapolation (REx)</h3>
-            
-            <p>REx is another approach that penalizes the difference between training risks across environments. NCR can be seen as a specific instance of REx where the penalty is the variance of risks.</p>
-            
-            <h3>Anchor Regression</h3>
-            
-            <p>Anchor regression is a method for causal inference that uses a similar objective function to NCR but is formulated in terms of linear models. NCR extends these ideas to nonlinear models using neural networks.</p>
-
-            <h2>Practical Considerations</h2>
-            
-            <h3>Choosing the Regularization Parameter</h3>
-            
-            <p>The regularization parameter \(\lambda\) controls the trade-off between average performance and invariance. A larger \(\lambda\) puts more emphasis on invariance, which can lead to better out-of-distribution generalization but potentially worse in-distribution performance.</p>
-            
-            <p>In practice, \(\lambda\) can be chosen using cross-validation on a validation set from a different environment than the training environments.</p>
-            
-            <h3>Model Architecture</h3>
-            
-            <p>NCR can be applied to any neural network architecture. However, the choice of architecture can affect the model's ability to capture invariant relationships. In general, deeper networks with sufficient capacity are recommended.</p>
-            
-            <h3>Number of Environments</h3>
-            
-            <p>NCR requires data from multiple environments to identify invariant relationships. In general, having more diverse environments can lead to better identification of causal features. However, even with just two environments, NCR can provide benefits over standard empirical risk minimization.</p>
-
-            <h2>Limitations</h2>
-            
-            <p>While NCR provides a powerful framework for learning invariant predictors, it has some limitations:</p>
-            
-            <ul>
-                <li><strong>Environment Diversity</strong>: NCR relies on having data from diverse environments that exhibit different distributions of non-causal features. If the environments are too similar, it may be difficult to distinguish between causal and non-causal features.</li>
-                <li><strong>Model Expressivity</strong>: NCR assumes that the model class is expressive enough to capture the true causal relationship. If this is not the case, NCR may not find the optimal invariant predictor.</li>
-                <li><strong>Optimization Challenges</strong>: The NCR objective can be challenging to optimize, especially with high-dimensional data and complex neural network architectures.</li>
-                <li><strong>Causal Sufficiency</strong>: NCR assumes that all relevant causal variables are observed. If there are hidden confounders, NCR may not identify the true causal features.</li>
-            </ul>
-
-            <h2>Further Reading</h2>
-            
-            <p>For more details on the theoretical foundations of Neural Causal Regularization, we recommend the following resources:</p>
-            
-            <ul>
-                <li>Arjovsky, M., Bottou, L., Gulrajani, I., & Lopez-Paz, D. (2019). <a href="https://arxiv.org/abs/1907.02893" target="_blank">Invariant Risk Minimization</a>.</li>
-                <li>Krueger, D., Caballero, E., Jacobsen, J. H., Zhang, A., Binas, J., Zhang, D., ... & Courville, A. (2021). <a href="https://arxiv.org/abs/2007.00644" target="_blank">Out-of-Distribution Generalization via Risk Extrapolation (REx)</a>.</li>
-                <li>Rothenhäusler, D., Bühlmann, P., & Meinshausen, N. (2021). <a href="https://arxiv.org/abs/1909.02212" target="_blank">Causal Dantzig: Fast and accurate causal inference with outcome dependent sampling</a>.</li>
-                <li>Peters, J., Bühlmann, P., & Meinshausen, N. (2016). <a href="https://arxiv.org/abs/1501.01332" target="_blank">Causal inference using invariant prediction: identification and confidence intervals</a>.</li>
-            </ul>
-        </main>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-col">
-                    <h3>Neural Causal Regularization</h3>
-                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="../index.html">Home</a></li>
-                        <li><a href="index.html">Documentation</a></li>
-                        <li><a href="../examples/index.html">Examples</a></li>
-                        <li><a href="../download/index.html">Download</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Resources</h3>
-                    <ul>
-                        <li><a href="api.html">API Reference</a></li>
-                        <li><a href="tutorials.html">Tutorials</a></li>
-                        <li><a href="theory.html">Theoretical Background</a></li>
-                        <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub Repository</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Contact</h3>
-                    <ul>
-                        <li><a href="mailto:contact@example.com">Email Us</a></li>
-                        <li><a href="https://twitter.com/username" target="_blank">Twitter</a></li>
-                        <li><a href="https://github.com/username" target="_blank">GitHub</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
-    <script src="../js/main.js"></script>
+        For full proofs see Section 4 of the paper (Richter et al., 2025).
+    </main>
+    <footer>…</footer>
 </body>
+
 </html>

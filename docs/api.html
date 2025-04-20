@@ -1,599 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Reference - Neural Causal Regularization</title>
-    <meta name="description" content="Complete API reference for the Neural Causal Regularization package, including all functions and their parameters.">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>API – ncr</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
 </head>
+
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <a href="../index.html">Neural<span>Causal</span>Reg</a>
-            </div>
-            <nav>
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul>
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a href="index.html">Documentation</a></li>
-                    <li><a href="../examples/index.html">Examples</a></li>
-                    <li><a href="../download/index.html">Download</a></li>
-                    <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <header>…</header>
 
-    <!-- Documentation Content -->
-    <div class="container docs-container">
-        <aside class="docs-sidebar">
-            <h3>Documentation</h3>
-            <ul>
-                <li><a href="index.html">Introduction</a></li>
-                <li><a href="installation.html">Installation</a></li>
-                <li><a href="getting-started.html">Getting Started</a></li>
-                <li><a href="theory.html">Theoretical Background</a></li>
-                <li><a href="api.html">API Reference</a></li>
-                <li>
-                    <strong>Data Generation</strong>
-                    <ul>
-                        <li><a href="data-generation/linear-sem.html">Linear SEM</a></li>
-                        <li><a href="data-generation/nonlinear-sem.html">Nonlinear SEM</a></li>
-                        <li><a href="data-generation/hidden-confounders.html">Hidden Confounders</a></li>
-                        <li><a href="data-generation/adversarial-shifts.html">Adversarial Shifts</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Model Training</strong>
-                    <ul>
-                        <li><a href="model-training/ncr-model.html">NCR Model</a></li>
-                        <li><a href="model-training/train-ncr.html">Training with NCR</a></li>
-                        <li><a href="model-training/linear-causal-reg.html">Linear Causal Regularization</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Evaluation & Visualization</strong>
-                    <ul>
-                        <li><a href="evaluation/model-evaluation.html">Model Evaluation</a></li>
-                        <li><a href="evaluation/feature-importance.html">Feature Importance</a></li>
-                        <li><a href="evaluation/visualization.html">Visualization</a></li>
-                    </ul>
-                </li>
-                <li><a href="faq.html">FAQ</a></li>
-            </ul>
-        </aside>
+    <main class="container docs-content">
+        <h1>API Reference (ncr 0.0.1)</h1>
 
-        <main class="docs-content">
-            <h1>API Reference</h1>
-            
-            <p>This page provides detailed documentation for all functions in the Neural Causal Regularization package.</p>
+        <h2>Core</h2>
+        <table>
+            <tr>
+                <th>Function / Class</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td><code>ncr.NCRNet(input_dim, hidden_dims, output_dim=1)</code></td>
+                <td>Simple MLP used in the paper (you can plug in any nn.Module).</td>
+            </tr>
+            <tr>
+                <td><code>ncr.train_ncr(model, env_loaders, criterion, *, lambda_reg, penalty, epochs, lr)</code></td>
+                <td>Training loop that adds <code>lambda_reg × penalty</code> to mean risk.</td>
+            </tr>
+            <tr>
+                <td><code>ncr.risk_gap(r1,r2)</code></td>
+                <td>|r₁ − r₂|  (default penalty)</td>
+            </tr>
+            <tr>
+                <td><code>ncr.risk_variance(r1,r2)</code></td>
+                <td>0.5 (r₁ − r₂)²  (REx)</td>
+            </tr>
+            <tr>
+                <td><code>ncr.accuracy(model, loader)</code></td>
+                <td>Binary accuracy helper.</td>
+            </tr>
+        </table>
 
-            <h2>Data Generation Functions</h2>
-            
-            <h3 id="generate_linear_sem">generate_linear_sem</h3>
-            <p>Generate data from a linear structural equation model with environment shifts.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">generate_linear_sem(
-  n_samples,
-  p,
-  gamma,
-  beta,
-  noise_scale = 1,
-  env_shift = 1,
-  seed = NULL
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>n_samples</code>: Number of samples to generate</li>
-                <li><code>p</code>: Number of covariates</li>
-                <li><code>gamma</code>: Effect of shift variable on covariates (vector of length p)</li>
-                <li><code>beta</code>: Causal parameters (vector of length p)</li>
-                <li><code>noise_scale</code>: Scale of noise terms</li>
-                <li><code>env_shift</code>: Strength of environment shift</li>
-                <li><code>seed</code>: Random seed for reproducibility</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A list containing:</p>
-            <ul>
-                <li><code>X</code>: Matrix of covariates (n_samples x p)</li>
-                <li><code>Y</code>: Vector of target variable (length n_samples)</li>
-                <li><code>A</code>: Vector of shift variable (length n_samples)</li>
-                <li><code>env</code>: Environment indicator (0 for reference, 1 for shifted)</li>
-            </ul>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Generate data from a linear SEM with 5 covariates
-p <- 5
-gamma <- runif(p, -1, 1)
-beta <- c(1, 0.5, 0, 0, 0)  # Only first two variables are causal
-data <- generate_linear_sem(n_samples = 1000, p = p, gamma = gamma, beta = beta)</code></pre>
+        <h2>Utilities</h2>
+        <table>
+            <tr>
+                <th>Function</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td><code>ncr.utils.tune_lambda(...)</code></td>
+                <td>Grid‑search λ on a validation loader; returns best model &amp; λ.</td>
+            </tr>
+        </table>
 
-            <h3 id="generate_nonlinear_sem">generate_nonlinear_sem</h3>
-            <p>Generate data from a nonlinear structural equation model with environment shifts.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">generate_nonlinear_sem(
-  n_samples,
-  p,
-  gamma,
-  causal_idx,
-  nonlinearity_type = "mixed",
-  nonlinearity_strength = 1,
-  noise_scale = 1,
-  env_shift = 1,
-  seed = NULL
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>n_samples</code>: Number of samples to generate</li>
-                <li><code>p</code>: Number of covariates</li>
-                <li><code>gamma</code>: Effect of shift variable on covariates (vector of length p)</li>
-                <li><code>causal_idx</code>: Indices of causal variables (vector)</li>
-                <li><code>nonlinearity_type</code>: Type of nonlinearity ('polynomial', 'sigmoid', or 'mixed')</li>
-                <li><code>nonlinearity_strength</code>: Strength of nonlinearity</li>
-                <li><code>noise_scale</code>: Scale of noise terms</li>
-                <li><code>env_shift</code>: Strength of environment shift</li>
-                <li><code>seed</code>: Random seed for reproducibility</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A list containing:</p>
-            <ul>
-                <li><code>X</code>: Matrix of covariates (n_samples x p)</li>
-                <li><code>Y</code>: Vector of target variable (length n_samples)</li>
-                <li><code>A</code>: Vector of shift variable (length n_samples)</li>
-                <li><code>env</code>: Environment indicator (0 for reference, 1 for shifted)</li>
-            </ul>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Generate data from a nonlinear SEM with 5 covariates
-p <- 5
-gamma <- runif(p, -1, 1)
-causal_idx <- c(1, 2)  # Only first two variables are causal
-data <- generate_nonlinear_sem(n_samples = 1000, p = p, gamma = gamma, 
-                              causal_idx = causal_idx)</code></pre>
+        <h2>Experimental helpers</h2>
+        <ul>
+            <li><code>experiments/colored_mnist.py</code> – synthetic dataset builders.</li>
+            <li><code>experiments/run_colored_mnist.py</code> – reproduces Table 1.</li>
+        </ul>
 
-            <h3 id="generate_hidden_confounders_sem">generate_hidden_confounders_sem</h3>
-            <p>Generate data from a structural equation model with hidden confounders.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">generate_hidden_confounders_sem(
-  n_samples,
-  p,
-  gamma,
-  beta,
-  n_confounders = 1,
-  confounding_strength = 1,
-  noise_scale = 1,
-  env_shift = 1,
-  seed = NULL
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>n_samples</code>: Number of samples to generate</li>
-                <li><code>p</code>: Number of covariates</li>
-                <li><code>gamma</code>: Effect of shift variable on covariates (vector of length p)</li>
-                <li><code>beta</code>: Causal parameters (vector of length p)</li>
-                <li><code>n_confounders</code>: Number of hidden confounders</li>
-                <li><code>confounding_strength</code>: Strength of confounding effect</li>
-                <li><code>noise_scale</code>: Scale of noise terms</li>
-                <li><code>env_shift</code>: Strength of environment shift</li>
-                <li><code>seed</code>: Random seed for reproducibility</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A list containing:</p>
-            <ul>
-                <li><code>X</code>: Matrix of covariates (n_samples x p)</li>
-                <li><code>Y</code>: Vector of target variable (length n_samples)</li>
-                <li><code>A</code>: Vector of shift variable (length n_samples)</li>
-                <li><code>env</code>: Environment indicator (0 for reference, 1 for shifted)</li>
-                <li><code>H</code>: Matrix of hidden confounders (n_samples x n_confounders)</li>
-            </ul>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Generate data from a SEM with hidden confounders
-p <- 5
-gamma <- runif(p, -1, 1)
-beta <- c(1, 0.5, 0, 0, 0)  # Only first two variables are causal
-data <- generate_hidden_confounders_sem(n_samples = 1000, p = p, gamma = gamma, 
-                                       beta = beta, n_confounders = 2)</code></pre>
-
-            <h3 id="generate_adversarial_sem">generate_adversarial_sem</h3>
-            <p>Generate data from a structural equation model with adversarial environment shifts.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">generate_adversarial_sem(
-  n_samples,
-  p,
-  gamma,
-  beta,
-  violation_strength = 1,
-  noise_scale = 1,
-  env_shift = 1,
-  seed = NULL
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>n_samples</code>: Number of samples to generate</li>
-                <li><code>p</code>: Number of covariates</li>
-                <li><code>gamma</code>: Effect of shift variable on covariates (vector of length p)</li>
-                <li><code>beta</code>: Causal parameters (vector of length p)</li>
-                <li><code>violation_strength</code>: Strength of invariance violation</li>
-                <li><code>noise_scale</code>: Scale of noise terms</li>
-                <li><code>env_shift</code>: Strength of environment shift</li>
-                <li><code>seed</code>: Random seed for reproducibility</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A list containing:</p>
-            <ul>
-                <li><code>X</code>: Matrix of covariates (n_samples x p)</li>
-                <li><code>Y</code>: Vector of target variable (length n_samples)</li>
-                <li><code>A</code>: Vector of shift variable (length n_samples)</li>
-                <li><code>env</code>: Environment indicator (0 for reference, 1 for shifted)</li>
-            </ul>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Generate data from a SEM with adversarial shifts
-p <- 5
-gamma <- runif(p, -1, 1)
-beta <- c(1, 0.5, 0, 0, 0)  # Only first two variables are causal
-data <- generate_adversarial_sem(n_samples = 1000, p = p, gamma = gamma, 
-                                beta = beta)</code></pre>
-
-            <h2>Model Creation and Training Functions</h2>
-            
-            <h3 id="ncr_model">ncr_model</h3>
-            <p>Create a neural network model for Neural Causal Regularization.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">ncr_model(
-  input_dim, 
-  hidden_dims, 
-  output_dim = 1, 
-  activation = "relu"
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>input_dim</code>: Input dimension</li>
-                <li><code>hidden_dims</code>: Vector of hidden layer dimensions</li>
-                <li><code>output_dim</code>: Output dimension (default: 1)</li>
-                <li><code>activation</code>: Activation function ('relu', 'sigmoid', or 'tanh')</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A torch model for Neural Causal Regularization</p>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Create a NCR model with 5 input features and two hidden layers
-model <- ncr_model(input_dim = 5, hidden_dims = c(10, 5))</code></pre>
-
-            <h3 id="compute_ncr_loss">compute_ncr_loss</h3>
-            <p>Compute Neural Causal Regularization loss.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">compute_ncr_loss(
-  model, 
-  x_list, 
-  y_list, 
-  lambda_reg
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>model</code>: A torch model</li>
-                <li><code>x_list</code>: List of input tensors for each environment</li>
-                <li><code>y_list</code>: List of target tensors for each environment</li>
-                <li><code>lambda_reg</code>: Regularization parameter</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A list containing:</p>
-            <ul>
-                <li><code>loss</code>: Total loss</li>
-                <li><code>avg_risk</code>: Average risk across environments</li>
-                <li><code>var_risk</code>: Variance of risks across environments</li>
-            </ul>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Compute NCR loss
-model <- ncr_model(input_dim = 5, hidden_dims = c(10, 5))
-x1 <- torch::torch_randn(100, 5)
-y1 <- torch::torch_randn(100, 1)
-x2 <- torch::torch_randn(100, 5)
-y2 <- torch::torch_randn(100, 1)
-loss_info <- compute_ncr_loss(model, list(x1, x2), list(y1, y2), lambda_reg = 1.0)</code></pre>
-
-            <h3 id="train_ncr">train_ncr</h3>
-            <p>Train a neural network model using Neural Causal Regularization.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">train_ncr(
-  model,
-  x_train_list,
-  y_train_list,
-  lambda_reg = 1,
-  lr = 0.001,
-  n_epochs = 100,
-  batch_size = 32,
-  verbose = TRUE
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>model</code>: A torch model created with ncr_model()</li>
-                <li><code>x_train_list</code>: List of input matrices for each environment</li>
-                <li><code>y_train_list</code>: List of target vectors for each environment</li>
-                <li><code>lambda_reg</code>: Regularization parameter</li>
-                <li><code>lr</code>: Learning rate</li>
-                <li><code>n_epochs</code>: Number of epochs</li>
-                <li><code>batch_size</code>: Batch size</li>
-                <li><code>verbose</code>: Whether to print progress</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A list containing:</p>
-            <ul>
-                <li><code>model</code>: Trained model</li>
-                <li><code>losses</code>: Vector of losses during training</li>
-                <li><code>avg_risks</code>: Vector of average risks during training</li>
-                <li><code>var_risks</code>: Vector of risk variances during training</li>
-            </ul>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Train a model with Neural Causal Regularization
-model <- ncr_model(input_dim = 5, hidden_dims = c(10, 5))
-result <- train_ncr(
-  model = model,
-  x_train_list = x_train_list,
-  y_train_list = y_train_list,
-  lambda_reg = 1.0,
-  lr = 0.01,
-  n_epochs = 100,
-  batch_size = 32
-)</code></pre>
-
-            <h3 id="train_linear_causal_reg">train_linear_causal_reg</h3>
-            <p>Train a linear model using causal regularization.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">train_linear_causal_reg(
-  x_train_list, 
-  y_train_list, 
-  lambda_reg = 1
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>x_train_list</code>: List of input matrices for each environment</li>
-                <li><code>y_train_list</code>: List of target vectors for each environment</li>
-                <li><code>lambda_reg</code>: Regularization parameter</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A list containing:</p>
-            <ul>
-                <li><code>coefficients</code>: Estimated coefficients</li>
-                <li><code>intercept</code>: Estimated intercept</li>
-                <li><code>avg_risk</code>: Average risk across environments</li>
-                <li><code>var_risk</code>: Variance of risks across environments</li>
-            </ul>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Train a linear model with causal regularization
-result <- train_linear_causal_reg(
-  x_train_list = list(x_train_env1, x_train_env2),
-  y_train_list = list(y_train_env1, y_train_env2),
-  lambda_reg = 1.0
-)</code></pre>
-
-            <h2>Evaluation and Visualization Functions</h2>
-            
-            <h3 id="evaluate_model">evaluate_model</h3>
-            <p>Evaluate a model on test data.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">evaluate_model(
-  model, 
-  x_test, 
-  y_test
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>model</code>: A torch model</li>
-                <li><code>x_test</code>: Input tensor or matrix</li>
-                <li><code>y_test</code>: Target tensor or vector</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>Mean squared error</p>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Evaluate model
-mse <- evaluate_model(result$model, x_test, y_test)</code></pre>
-
-            <h3 id="compare_models">compare_models</h3>
-            <p>Compare multiple models on test data.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">compare_models(
-  models, 
-  model_names, 
-  x_test_list, 
-  y_test_list
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>models</code>: List of models to compare</li>
-                <li><code>model_names</code>: Vector of model names</li>
-                <li><code>x_test_list</code>: List of input matrices for each environment</li>
-                <li><code>y_test_list</code>: List of target vectors for each environment</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A data frame with model performance metrics</p>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Compare models
-comparison <- compare_models(
-  models = list(model1, model2, model3),
-  model_names = c("ERM", "NCR", "IRM"),
-  x_test_list = list(x_test_env1, x_test_env2),
-  y_test_list = list(y_test_env1, y_test_env2)
-)</code></pre>
-
-            <h3 id="extract_feature_importance">extract_feature_importance</h3>
-            <p>Extract feature importance from a trained Neural Causal Regularization model.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">extract_feature_importance(
-  model, 
-  x_test, 
-  y_test, 
-  n_repeats = 5
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>model</code>: A trained model</li>
-                <li><code>x_test</code>: Input tensor or matrix</li>
-                <li><code>y_test</code>: Target tensor or vector</li>
-                <li><code>n_repeats</code>: Number of permutation repeats</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A data frame with feature importance scores</p>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Extract feature importance
-importance <- extract_feature_importance(result$model, x_test, y_test)</code></pre>
-
-            <h3 id="plot_training_history">plot_training_history</h3>
-            <p>Plot training history of a Neural Causal Regularization model.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">plot_training_history(
-  training_result, 
-  plot_type = "both"
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>training_result</code>: Result from train_ncr()</li>
-                <li><code>plot_type</code>: Type of plot ('loss', 'risk', or 'both')</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A ggplot object</p>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Plot training history
-plot_training_history(result)</code></pre>
-
-            <h3 id="plot_model_comparison">plot_model_comparison</h3>
-            <p>Plot model comparison results.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">plot_model_comparison(
-  comparison_results
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>comparison_results</code>: Result from compare_models()</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A ggplot object</p>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Plot model comparison
-plot_model_comparison(comparison)</code></pre>
-
-            <h3 id="plot_feature_importance">plot_feature_importance</h3>
-            <p>Plot feature importance scores.</p>
-            
-            <h4>Usage</h4>
-            <pre><code class="r">plot_feature_importance(
-  importance_df, 
-  top_n = NULL
-)</code></pre>
-            
-            <h4>Arguments</h4>
-            <ul>
-                <li><code>importance_df</code>: Result from extract_feature_importance()</li>
-                <li><code>top_n</code>: Number of top features to show (default: all)</li>
-            </ul>
-            
-            <h4>Value</h4>
-            <p>A ggplot object</p>
-            
-            <h4>Example</h4>
-            <pre><code class="r"># Plot feature importance
-plot_feature_importance(importance)</code></pre>
-        </main>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-container">
-                <div class="footer-col">
-                    <h3>Neural Causal Regularization</h3>
-                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="../index.html">Home</a></li>
-                        <li><a href="index.html">Documentation</a></li>
-                        <li><a href="../examples/index.html">Examples</a></li>
-                        <li><a href="../download/index.html">Download</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Resources</h3>
-                    <ul>
-                        <li><a href="api.html">API Reference</a></li>
-                        <li><a href="tutorials.html">Tutorials</a></li>
-                        <li><a href="theory.html">Theoretical Background</a></li>
-                        <li><a href="https://github.com/username/ncausalreg" target="_blank">GitHub Repository</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Contact</h3>
-                    <ul>
-                        <li><a href="mailto:contact@example.com">Email Us</a></li>
-                        <li><a href="https://twitter.com/username" target="_blank">Twitter</a></li>
-                        <li><a href="https://github.com/username" target="_blank">GitHub</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
-    <script src="../js/main.js"></script>
+        See doc‑strings in the source files for full parameter lists.
+    </main>
+    <footer>…</footer>
 </body>
+
 </html>
