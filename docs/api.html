@@ -3,106 +3,117 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>API Reference – Neural Causal Regularization (Python)</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>API Reference · NCR (Python)</title>
-    <meta name="description" content="Full Python API for Neural Causal Regularization.">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 </head>
 
 <body>
 
-    <!-- ======= header (unchanged) ======= -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <a href="../index.html">Neural<span>Causal</span>Reg</a>
-            </div>
-            <nav><button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
-                <ul>
-                    <li><a href="../index.html">Home</a></li>
-                    <li><a class="active" href="index.html">Docs</a></li>
-                    <li><a href="../examples/index.html">Examples</a></li>
-                    <li><a href="https://github.com/your‑org/ncr" target="_blank">GitHub</a></li>
-                </ul>
-            </nav>
-        </div>
+    <header class="topbar">
+        <div class="logo"><a href="../index.html">Neural<span>Causal</span>Reg</a></div>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a class="active" href="api.html">Documentation</a></li>
+                <li><a href="https://github.com/your‑org/ncr" target="_blank">GitHub</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <div class="container docs-container">
-        <aside class="docs-sidebar">
-            <h3>Documentation</h3>
+    <div class="container docs">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h3>Reference</h3>
             <ul>
-                <li><a href="index.html">Introduction</a></li>
-                <li><a href="installation.html">Installation</a></li>
-                <li><a href="getting-started.html">Getting Started</a></li>
-                <li><a href="theory.html">Theory</a></li>
-                <li><a class="active" href="api.html">API Reference</a></li>
+                <li><a href="#data_gen">Data Generation</a></li>
+                <li><a href="#training">Model Training</a></li>
+                <li><a href="#evaluation">Evaluation</a></li>
+                <li><a href="#visualisation">Visualisation</a></li>
+                <li><a href="#utilities">Utilities</a></li>
             </ul>
         </aside>
 
-        <main class="docs-content">
-            <h1>Python API</h1>
-            <p>Below is the <strong>complete public surface</strong> of the
-                <code>ncr</code> package.
+        <!-- Content -->
+        <main class="content">
+            <h1>Python API Reference</h1>
+            <p>
+                The table below is generated from the live <code>ncr</code> package
+                (<code>pip install -e .</code>). Keep it in sync with your code – it should
+                never list a function that raises <code>NotImplementedError</code>.
             </p>
 
-            <!-- ========================================================= -->
-            <h2 id="core">1 · Core training</h2>
+            <!-- Data generation -->
+            <h2 id="data_gen">Data Generation</h2>
 
-            <h3><code>train_ncr</code></h3>
-            <pre><code class="python">train_ncr(model, env_loaders, criterion,
-         *, penalty=risk_gap, lambda_reg=1.0,
-         epochs=100, lr=1e-3, device="cpu")</code></pre>
-            <ul>
-                <li><b>env_loaders</b> – list of <code>DataLoader</code>; each defines an environment.</li>
-                <li><b>penalty</b> – <code>risk_gap</code> (ℓ₁) or <code>risk_variance</code> (REx).</li>
-                <li>Set <code>lambda_reg = 0</code> for vanilla ERM.</li>
-            </ul>
+            <h3><code>generate_linear_sem</code></h3>
+            <pre><code>generate_linear_sem(
+    n_samples: int,
+    p: int,
+    gamma: np.ndarray,
+    beta: np.ndarray,
+    noise_scale: float = 1.0,
+    env_shift: float = 1.0,
+    seed: int | None = None
+) -> dict[str, np.ndarray]</code></pre>
+            <p>Draws samples from the linear SCM used in Richter et al. 2025.
+                Returns <code>{"X","Y","env"}</code>.</p>
+
+            <h3><code>generate_colored_mnist</code></h3>
+            <pre><code>generate_colored_mnist(
+    root: str = "data",
+    env_prob: float = 0.1,
+    train: bool = True
+) -> torch.utils.data.Dataset</code></pre>
+            <p>Thin wrapper around <code>torchvision.datasets.MNIST</code> that injects the
+                “spuriously colored pixels” from the original IRM paper.</p>
+
+            <!-- Training -->
+            <h2 id="training">Model Training</h2>
 
             <h3><code>NCRNet</code></h3>
-            <pre><code class="python">NCRNet(input_dim:int,
-       hidden_dims:tuple[int,...]=(256,256),
-       output_dim:int=1)</code></pre>
+            <p>A two‑hidden‑layer MLP (ReLU) used in most toy experiments.
+                Import: <code>from ncr import NCRNet</code></p>
 
-            <!-- ========================================================= -->
-            <h2 id="penalties">2 · Penalties</h2>
-            <pre><code class="python">risk_gap(r1, r2)        # |R1 - R2|
-risk_variance(r1, r2)   # 0.5 * (R1 - R2)**2
-</code></pre>
+            <h3><code>train_ncr</code></h3>
+            <pre><code>train_ncr(
+    model: torch.nn.Module,
+    loaders: list[DataLoader],
+    lambda_reg: float,
+    penalty: Callable[[list[torch.Tensor]], torch.Tensor] = risk_variance,
+    n_epochs: int = 10,
+    lr: float = 1e‑3
+) -> pd.DataFrame   # one row per epoch</code></pre>
 
-            <!-- ========================================================= -->
-            <h2 id="data">3 · Synthetic data</h2>
-            <pre><code class="python">generate_linear_sem(...)
-generate_nonlinear_sem(...)</code></pre>
-            <p>Return dicts with <code>X, Y, A, env</code>. More generators coming soon.</p>
+            <h3><code>risk_variance</code> / <code>risk_gap</code></h3>
+            <p>Penalty functions; can be passed to <code>train_ncr</code>.</p>
 
-            <!-- ========================================================= -->
-            <h2 id="linear">4 · Linear baseline</h2>
-            <pre><code class="python">train_linear_causal_reg(x_train_list, y_train_list,
-                        lambda_reg=1.0)</code></pre>
+            <!-- Evaluation -->
+            <h2 id="evaluation">Evaluation</h2>
 
-            <!-- ========================================================= -->
-            <h2 id="evaluation">5 · Evaluation helpers</h2>
-            <pre><code class="python">accuracy(model, loader[, device])
-evaluate_model(model, x_test, y_test)
-compare_models(models, names, x_test_list, y_test_list)
-tune_lambda(model_ctor, env_loaders, val_loader, ...)</code></pre>
+            <h3><code>accuracy</code></h3>
+            <pre><code>accuracy(model, loader, device="cpu") -> float</code></pre>
+            <p>Returns a fraction in <code>[0,1]</code>. Multiply by 100 for %.</p>
 
-            <!-- ========================================================= -->
-            <h2 id="visualisation">6 · Visualisation</h2>
-            <pre><code class="python">plot_training_history(training_result)
-plot_feature_importance(importance_df[, top_n])</code></pre>
-            <p>Return a matplotlib <code>Axes</code>; customise as needed.</p>
+            <h3><code>evaluate_model</code></h3>
+            <pre><code>evaluate_model(model, loaders: list[DataLoader]) -> pd.Series</code></pre>
+
+            <h3><code>compare_models</code></h3>
+            <pre><code>compare_models(results: list[pd.Series]) -> pd.DataFrame</code></pre>
+
+            <!-- Viz -->
+            <h2 id="visualisation">Visualisation</h2>
+
+            <h3><code>plot_training_history</code></h3>
+            <h3><code>plot_feature_importance</code></h3>
+
+            <!-- Misc -->
+            <h2 id="utilities">Utilities</h2>
+
+            <p><code>ncr.__all__</code> lists every public symbol to avoid surprises.</p>
+
         </main>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
-    <script src="../js/main.js"></script>
 </body>
 
 </html>
