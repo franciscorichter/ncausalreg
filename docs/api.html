@@ -3,117 +3,181 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>API Reference – Neural Causal Regularization (Python)</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - Neural Causal Regularization</title>
+    <meta name="description" content="Complete Python API reference for the Neural Causal Regularization package.">
+    <!-- A‑Z style assets (same as your example page) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/atom-one-dark.min.css">
 </head>
 
 <body>
-
-    <header class="topbar">
-        <div class="logo"><a href="../index.html">Neural<span>Causal</span>Reg</a></div>
-        <nav>
-            <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a class="active" href="api.html">Documentation</a></li>
-                <li><a href="https://github.com/your‑org/ncr" target="_blank">GitHub</a></li>
-            </ul>
-        </nav>
+    <!-- ========== HEADER ========== -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <a href="../index.html">Neural<span>Causal</span>Reg</a>
+            </div>
+            <nav>
+                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a class="active" href="index.html">Documentation</a></li>
+                    <li><a href="../examples/index.html">Examples</a></li>
+                    <li><a href="../download/index.html">Download</a></li>
+                    <li><a href="https://github.com/your‑org/ncr" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <div class="container docs">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <h3>Reference</h3>
+    <!-- ========== MAIN ========== -->
+    <div class="container docs-container">
+        <!-- ---------- SIDEBAR ---------- -->
+        <aside class="docs-sidebar">
+            <h3>Documentation</h3>
             <ul>
-                <li><a href="#data_gen">Data Generation</a></li>
-                <li><a href="#training">Model Training</a></li>
-                <li><a href="#evaluation">Evaluation</a></li>
-                <li><a href="#visualisation">Visualisation</a></li>
-                <li><a href="#utilities">Utilities</a></li>
+                <li><a href="index.html">Getting Started</a></li>
+                <li><a class="active" href="api.html">API Reference</a></li>
+                <li><a href="theory.html">Theory</a></li>
+                <li><a href="tutorials.html">Tutorials</a></li>
+                <li><a href="faq.html">FAQ</a></li>
             </ul>
         </aside>
 
-        <!-- Content -->
-        <main class="content">
+        <!-- ---------- CONTENT ---------- -->
+        <main class="docs-content">
             <h1>Python API Reference</h1>
             <p>
-                The table below is generated from the live <code>ncr</code> package
-                (<code>pip install -e .</code>). Keep it in sync with your code – it should
-                never list a function that raises <code>NotImplementedError</code>.
+                This page is generated from the live
+                <code>ncr</code> Python package (<code>pip install -e .</code>).
+                Only functions that are currently implemented are listed.
             </p>
 
-            <!-- Data generation -->
-            <h2 id="data_gen">Data Generation</h2>
+            <!-- ========== DATA GEN ========== -->
+            <h2 id="data-generation">Data Generation</h2>
 
-            <h3><code>generate_linear_sem</code></h3>
-            <pre><code>generate_linear_sem(
-    n_samples: int,
-    p: int,
-    gamma: np.ndarray,
-    beta: np.ndarray,
-    noise_scale: float = 1.0,
-    env_shift: float = 1.0,
-    seed: int | None = None
-) -> dict[str, np.ndarray]</code></pre>
-            <p>Draws samples from the linear SCM used in Richter et al. 2025.
-                Returns <code>{"X","Y","env"}</code>.</p>
+            <h3 id="generate_linear_sem"><code>generate_linear_sem</code></h3>
+            <p>Generate data from a linear structural equation model with two environments.</p>
+            <pre><code class="python">from ncr import generate_linear_sem
+data = generate_linear_sem(
+    n_samples = 1000,
+    p         = 5,
+    gamma     = np.array([1, .5, 0, 0, 0]),
+    beta      = np.array([2, 1, 0, 0, 0]),
+    env_shift = 2.0,
+    seed      = 42)
+</code></pre>
+            <ul>
+                <li><code>X</code> – <em>(n_samples × p)</em> covariate matrix</li>
+                <li><code>Y</code> – target vector</li>
+                <li><code>env</code> – 0 (reference) / 1 (shifted)</li>
+            </ul>
 
-            <h3><code>generate_colored_mnist</code></h3>
-            <pre><code>generate_colored_mnist(
-    root: str = "data",
-    env_prob: float = 0.1,
-    train: bool = True
-) -> torch.utils.data.Dataset</code></pre>
-            <p>Thin wrapper around <code>torchvision.datasets.MNIST</code> that injects the
-                “spuriously colored pixels” from the original IRM paper.</p>
+            <h3 id="generate_colored_mnist"><code>generate_colored_mnist</code></h3>
+            <p>Create an IRM‑style coloured‑MNIST <code>torch.utils.data.Dataset</code>.</p>
+            <pre><code class="python">from ncr import generate_colored_mnist
+train_ds = generate_colored_mnist(root="data", env_prob=0.1, train=True)</code></pre>
 
-            <!-- Training -->
-            <h2 id="training">Model Training</h2>
+            <!-- ========== MODEL TRAINING ========== -->
+            <h2 id="model-training">Model Training</h2>
 
-            <h3><code>NCRNet</code></h3>
-            <p>A two‑hidden‑layer MLP (ReLU) used in most toy experiments.
-                Import: <code>from ncr import NCRNet</code></p>
+            <h3 id="NCRNet"><code>NCRNet</code></h3>
+            <p>Small MLP used in toy experiments.</p>
+            <pre><code class="python">from ncr import NCRNet
+net = NCRNet(input_dim=28*28, hidden_dim=256, n_hidden=2)</code></pre>
 
-            <h3><code>train_ncr</code></h3>
-            <pre><code>train_ncr(
-    model: torch.nn.Module,
-    loaders: list[DataLoader],
-    lambda_reg: float,
-    penalty: Callable[[list[torch.Tensor]], torch.Tensor] = risk_variance,
-    n_epochs: int = 10,
-    lr: float = 1e‑3
-) -> pd.DataFrame   # one row per epoch</code></pre>
+            <h3 id="train_ncr"><code>train_ncr</code></h3>
+            <pre><code class="python">from ncr import train_ncr, risk_variance
+history = train_ncr(net, loaders=[loader0, loader1],
+                    lambda_reg=10.0,
+                    penalty=risk_variance,
+                    n_epochs=10)</code></pre>
+            <p><code>history</code> is a <code>pandas.DataFrame</code> (one row per epoch).</p>
 
-            <h3><code>risk_variance</code> / <code>risk_gap</code></h3>
-            <p>Penalty functions; can be passed to <code>train_ncr</code>.</p>
+            <h4>Penalty helpers</h4>
+            <ul>
+                <li><code>risk_variance(*risks)</code></li>
+                <li><code>risk_gap(*risks)</code></li>
+            </ul>
 
-            <!-- Evaluation -->
-            <h2 id="evaluation">Evaluation</h2>
+            <!-- ========== EVALUATION ========== -->
+            <h2 id="evaluation">Evaluation &amp; Metrics</h2>
 
-            <h3><code>accuracy</code></h3>
-            <pre><code>accuracy(model, loader, device="cpu") -> float</code></pre>
-            <p>Returns a fraction in <code>[0,1]</code>. Multiply by 100 for %.</p>
+            <h3 id="accuracy"><code>accuracy</code></h3>
+            <p>Fraction of correct predictions (0–1). Multiply by 100 for %.</p>
+            <pre><code class="python">from ncr import accuracy
+acc = accuracy(net, loader) * 100
+print(f"{acc:.2f}%")</code></pre>
 
-            <h3><code>evaluate_model</code></h3>
-            <pre><code>evaluate_model(model, loaders: list[DataLoader]) -> pd.Series</code></pre>
+            <h3 id="evaluate_model"><code>evaluate_model</code></h3>
+            <p>Return MSE on each loader passed.</p>
 
-            <h3><code>compare_models</code></h3>
-            <pre><code>compare_models(results: list[pd.Series]) -> pd.DataFrame</code></pre>
+            <h3 id="compare_models"><code>compare_models</code></h3>
+            <p>Concatenate a list of result series into a comparison table.</p>
 
-            <!-- Viz -->
+            <!-- ========== VISUALISATION ========== -->
             <h2 id="visualisation">Visualisation</h2>
 
-            <h3><code>plot_training_history</code></h3>
-            <h3><code>plot_feature_importance</code></h3>
+            <h3 id="plot_training_history"><code>plot_training_history</code></h3>
+            <pre><code class="python">from ncr import plot_training_history
+plot_training_history(history)</code></pre>
 
-            <!-- Misc -->
+            <h3 id="plot_feature_importance"><code>plot_feature_importance</code></h3>
+            <p>Permutation‑based feature importance for trained NCR models.</p>
+
+            <!-- ========== UTILITIES ========== -->
             <h2 id="utilities">Utilities</h2>
-
-            <p><code>ncr.__all__</code> lists every public symbol to avoid surprises.</p>
-
+            <p><code>ncr.__all__</code> lists every public symbol.</p>
         </main>
     </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Neural Causal Regularization</h3>
+                    <p>A framework for extending causal invariance principles to deep neural networks.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="index.html">Documentation</a></li>
+                        <li><a href="../examples/index.html">Examples</a></li>
+                        <li><a href="../download/index.html">Download</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="api.html">API Reference</a></li>
+                        <li><a href="tutorials.html">Tutorials</a></li>
+                        <li><a href="theory.html">Theory</a></li>
+                        <li><a href="https://github.com/your‑org/ncr" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:contact@example.com">Email Us</a></li>
+                        <li><a href="https://twitter.com/your‑handle" target="_blank">Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Neural Causal Regularization. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <script src="../js/main.js"></script>
 </body>
 
 </html>
